@@ -36,7 +36,7 @@ const HeaderCpt = () => {
        
     }
     return <div className="layout-header-content">
-
+        <div style={{fontSize:20}}>后台管理系统</div>
         <div className="header-right">
             <Button type="primary" onClick={() => window.location.reload()} icon={<SyncOutlined />}>刷新页面</Button>
             <div>用户类型：  {getUsertypeText(userData.user_type)}  </div>

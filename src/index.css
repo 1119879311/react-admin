@@ -23,6 +23,10 @@ button.ant-btn{
 }
 
 .col-12{padding:0 12px}
+.bg-block{
+    background-color: #fff;
+    padding: 12px;
+}
 .m-flex{display: flex;width: 100%}
 .m-flex.flex-wrap{flex-wrap: wrap}
 .img-respose{display: block;width: 100%;margin: auto;}
@@ -96,4 +100,19 @@ button.ant-btn{
     left: 200px;
     z-index: 1;
     padding: 4px;
+}
+
+.ant-spin-nested-loading,
+.ant-spin-container{
+    height: 100%;
+}
+.by-full-mask{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: #e6f7ff;
+    border: 1px solid #91d5ff;
 }

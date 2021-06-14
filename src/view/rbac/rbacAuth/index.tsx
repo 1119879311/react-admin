@@ -15,20 +15,47 @@ function getStatusText(status:number){
 // 找下级的 权限数据
 function findFirstChild(id:number,list:any[]){
     let res:any =[];
-    for(let i =0;i<list.length;i++){
-        let itme = list[i];
-        if(itme.id===id){
-            let child:any[] = itme.children||[];
-         
-            res = child.filter(itme=>itme.auth_type===2);
-            break;
-        }else{
-           res= findFirstChild(id,itme.children||[])
+    let fn = (data:any[])=>{
+        for(let i =0;i<data.length;i++){
+            let itme = data[i];
+            if(itme.id===id){
+                console.log("itme----",itme.auths)
+                res =  itme.auths||[];
+                break;
+            }else{
+                fn(itme.children||[]);
+            }
+    
         }
-
     }
+    fn(list)
     return res
 }
+//将菜单和功能权限分开
+function splitGroupAuths(data:{[key:string]:any}[]){
+    data.forEach((itme)=>{
+        if(itme.children?.length){
+            let auths:any[] = []
+            let childs:any=[];
+            for(let i=0;i<itme.children.length;i++){
+                if(itme.children[i].auth_type===1){
+                    childs.push(itme.children[i])
+                }else{
+                    itme.children[i].children=null;
+                    auths.push(itme.children[i])
+                }
+            }
+
+            itme['auths'] =  auths;
+            itme.children = childs;
+            splitGroupAuths(itme.children)
+        }else{
+            itme.children=null;
+            itme.auths=[];
+        }
+    })  
+}
+
 
 function initEditAddForm(){
     return {
@@ -77,15 +104,11 @@ export default class RbacAuth  extends React.Component {
 
     //点击菜单获取右边显示的权限列表
     onTitleClick = (e:Event,data:any)=>{
-        console.log("onTitleClick",data)
-        console.log(e)
         // e.stopPropagation()
         // 如果子节点是菜单跳过
-        let childs:any[] = data.children;
-        const res = childs.filter(itme=>itme.auth_type!==1)
-        this.clickIndex= data.id;
-        if(!data.length||res.length){
-            this.setState({tableList:res})
+        if(!data.children?.length||data.auths?.length){
+            this.clickIndex = data.id;
+            this.setState({tableList:data.auths})
         }
        
     }
@@ -95,13 +118,13 @@ export default class RbacAuth  extends React.Component {
         .then(res=>{
             let {data} = res.data||[]
             console.log(data)
+           
+            splitGroupAuths(data)
             let tableList=[];
             if(this.clickIndex!==0){
                 tableList = findFirstChild(this.clickIndex,data);
-                console.log(tableList)
             }
-            console.log(tableList)
-            this.setState({authsList:data,tableList})
+            this.setState({authsList:data,tableList:tableList})
         })
     }
     // 添加/修改
@@ -215,7 +238,7 @@ export default class RbacAuth  extends React.Component {
                     </div>
                 )}
                 dataSource={tableList} columns={[
-                    { title: '权限id', dataIndex: 'id',  key: 'id',width:120},
+                    { title: '权限id', dataIndex: 'id',  key: 'id',width:120,align:"center"},
                     { title: '权限名称', dataIndex: 'title',  key: 'title'},
                     { title: '权限标识', dataIndex: 'signName',  key: 'signName'},
                     { title: '权限链接', dataIndex: 'url',  key: 'url'},

@@ -1,0 +1,95 @@
+import React from "react";
+import { IRouter } from "../interface";
+
+export let authRoutes: IRouter[] = [
+  {
+    name: "page-index",
+    title: "首页",
+    path: "/admin",
+    exact: true,
+    Components: React.lazy(() => import("@/view/index/index")),
+  },
+  {
+    name: "page-cmsarticle",
+    title: "文章",
+    path: "/admin/cmsarticle",
+    exact: true,
+    Components: React.lazy(() => import("@/view/cms/article")),
+  },
+  {
+    name: "page-saveArticle",
+    title: "保存文章",
+    path: "/admin/cmsarticlesave/:id?",
+    exact: true,
+    Components: React.lazy(() => import("@/view/cms/article/editAddCpts")),
+  },
+  {
+    name: "page-cmsclassify",
+    title: "分类",
+    path: "/admin/cmsclassify",
+    exact: true,
+    Components: React.lazy(() => import("@/view/cms/classify")),
+  },
+  {
+    name: "page-cmstag",
+    title: "标签",
+    path: "/admin/cmstag",
+    exact: true,
+    Components: React.lazy(() => import("@/view/cms/tag")),
+  },
+  {
+    name: "page-cmsimage",
+    title: "图片管理",
+    path: "/admin/cmsimage",
+    exact: true,
+    Components: React.lazy(() => import("@/view/cms/images")),
+  },
+  {
+    name: "page-saveIamge",
+    title: "保存图片",
+    path: "/admin/cmsiamgesave/:id?",
+    exact: true,
+    Components: React.lazy(() => import("@/view/cms/images/editAddCpt")),
+  },
+  {
+    name: "page-rbacuser",
+    title: "管理员",
+    path: "/admin/rbacUser",
+    exact: true,
+    Components: React.lazy(() => import("@/view/rbac/rbacUser")),
+  },
+  {
+    name: "page-rbacrole",
+    title: "角色管理",
+    path: "/admin/rbacrole",
+    exact: true,
+    Components: React.lazy(() => import("@/view/rbac/rbacRole")),
+  },
+  {
+    name: "page-rbacauth",
+    title: "权限管理",
+    path: "/admin/rbacauth",
+    exact: true,
+    Components: React.lazy(() => import("@/view/rbac/rbacAuth")),
+  },
+  {
+    name: "page-message",
+    title: "留言管理",
+    path: "/admin/message",
+    exact: true,
+    Components: React.lazy(() => import("@/view/message")),
+  },
+  {
+    name: "page-logistics",
+    title: "物流管理",
+    path: "/admin/logistics",
+    exact: true,
+    Components: React.lazy(() => import("@/view/logistics")),
+  },
+  {
+    name: "page-antdDome",
+    title: "antd示例",
+    path: "/admin/antdDome",
+    Components: React.lazy(() => import("@/andtDome/")),
+  },
+];

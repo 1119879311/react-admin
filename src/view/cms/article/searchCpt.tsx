@@ -59,21 +59,14 @@ const SearchCpt = (props: ISearchPorps, ref: ((instance: unknown) => void) | Rea
                        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                        placeholder="Please select"
                        allowClear
-                       treeDefaultExpandAll
+                    //    treeDefaultExpandAll
                        treeNodeFilterProp="title"
                     >
                         {loopTreeItme(classifyList)}
                     </TreeSelect>
-                {/* <Select allowClear style={{ width: "200px" }}>
-                    {classifyList?.map(itme => <Option key={itme.id} value={itme.id}>{itme.name}</Option>)}
-                </Select> */}
             </Form.Item>
 
-            {/* <Form.Item label="日期" style={{ marginBottom: 0 }}>
-                <div className="m-flex m-center">
-                    <DatePicker /><span> &nbsp; - &nbsp; </span><DatePicker/>
-                </div>
-            </Form.Item> */}
+ 
              <Form.Item label="创建时间" name="time">
                  <RangePicker allowEmpty={[true,true]} />
             </Form.Item>

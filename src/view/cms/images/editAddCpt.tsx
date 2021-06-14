@@ -1,12 +1,10 @@
-import { Button, Cascader, Form, Input, InputNumber, message, Select, Spin, Switch, Tooltip, TreeSelect, Upload } from "antd"
-import { PlusOutlined, SyncOutlined, UploadOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
+import { Button, Cascader, Form, Input, InputNumber, message, Spin, Switch, Tooltip, Upload } from "antd"
+import { PlusOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
 import React, { useEffect, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
 
 import ajax from "@/api/axios";
 import { oneToTree, signRonder } from "@/util";
-import { loopTreeItme } from "@/component/ClassifyTree";
-const { TreeNode } = TreeSelect;
 const layout = { labelCol: { span: 2 }, wrapperCol: { span: 22 }, };
 function initEditAddForm() {
     return { id: '', title: "", remark: "", urls: [], cid: [], sort: 10, status: true, netimg: '' }
@@ -47,7 +45,9 @@ function useDetailData() {
     }
 
     useEffect(() => {
+        
         getDataDetail(params.id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.id])
 
     return { form, loading }

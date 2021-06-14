@@ -2,11 +2,14 @@
 .layout-header-content{
     height: 100%;
     width: 100%;
+    display: flex;
+    align-content: center;
 }
 .layout-header-content .header-right{
     display: flex;
     justify-content:flex-end;
     align-items: center;
+    flex:1
 }
 .layout-header-content  .header-right>*{
     margin-right: 24px;

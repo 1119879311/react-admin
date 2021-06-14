@@ -1,8 +1,7 @@
 import { Button, Form, Input, InputNumber, message, Select, Spin, Switch, Tooltip, TreeSelect, Upload } from "antd"
-import { PlusOutlined, SyncOutlined, UploadOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
+import { PlusOutlined,  ExclamationCircleTwoTone } from '@ant-design/icons';
 import React, { useEffect, useRef, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
-
 import ajax from "@/api/axios";
 import { oneToTree, signRonder } from "@/util";
 import { loopTreeItme } from "@/component/ClassifyTree";
@@ -14,7 +13,6 @@ function initEditAddForm() {
     return { id: '', title: "", content: "", remark: "", thuming: [], cid: '', tagIds: [], sort: 10, status: true, netimg: '' }
     // return { id: '', title: "", remark: "", urls: [], cid: '', sort: 10, status: true, netimg: '' }
 }
-
 //获取具体信息
 function useDetailData() {
     const [form] = Form.useForm();
@@ -52,7 +50,9 @@ function useDetailData() {
     }
 
     useEffect(() => {
+        
         getDataDetail(params.id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.id])
 
     return { loading, form }
@@ -153,7 +153,7 @@ const EditAddCpt = () => {
             let resArr = data.map((itme: any) => {
                 return { url: itme, uid: signRonder(10) }
             })
-            form.setFieldsValue({ urls: [...oldData, ...resArr] })
+            form.setFieldsValue({ thuming: [...oldData, ...resArr] })
             console.log(data)
         })
     }

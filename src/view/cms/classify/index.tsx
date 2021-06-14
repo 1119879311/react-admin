@@ -8,13 +8,6 @@ import { dataFormat, oneToTree } from '@/util';
 import EditAddCpt from './editAddCpt';
 
 
-// function getStatusText(status:number){
-//     let bool = status === 1;
-//     let color =bool?'green':'red'
-//     let text = bool?"正常":"禁用"
-//     return <span style={{color:color}}>{text}</span>
-// }
-
 function initEditAddForm(){
     return {
         id:'',
@@ -151,9 +144,9 @@ export default class CmsClassify  extends React.Component {
             expandable={{defaultExpandedRowKeys:openTableKeys,rowExpandable:()=>true}}
                 title={() => (
                 <div className="operation-main">
-                    <AuthButton type="primary"  onClick={()=>this.editAddFn()}>新增分类</AuthButton>
-                    <AuthButton type="primary"  onClick={()=>this.switchStatuFn(1)}>批量开启</AuthButton>
-                    <AuthButton type="primary"  onClick={()=>this.switchStatuFn(2)}>批量禁用</AuthButton>
+                    <AuthButton authname="per-saveClassify" type="primary"  onClick={()=>this.editAddFn()}>新增分类</AuthButton>
+                    <AuthButton authname="per-modifyStatusClassify" type="primary"  onClick={()=>this.switchStatuFn(1)}>批量开启</AuthButton>
+                    <AuthButton authname="per-modifyStatusClassify" type="primary"  onClick={()=>this.switchStatuFn(2)}>批量禁用</AuthButton>
                     <Button type="primary" icon={<SyncOutlined/>} onClick={()=>this.geTableData()}>刷新列表</Button>
                 </div>
             )}
@@ -174,9 +167,9 @@ export default class CmsClassify  extends React.Component {
                 render:(text: any,record: any) => 
                 <div className="operation-main">
                     {/* <AuthButton type="primary"  onClick={()=>this.editAddFn(0,record)}>新增子分类</AuthButton> */}
-                    <AuthButton type="primary" danger={record.status===1}  size="small" onClick={()=>this.switchStatuFn(0,record)}>{record.status===1?'禁用':'开启'}</AuthButton>
-                    <AuthButton type="primary"  onClick={()=>this.editAddFn(record)}>编辑</AuthButton>
-                    <AuthButton type="primary" danger size="small" disabled={record.status===1} onClick={()=>this.deleteFn(record)}>删除</AuthButton>   
+                    <AuthButton authname="per-modifyStatusClassify" type="primary"  danger={record.status===1}  size="small" onClick={()=>this.switchStatuFn(0,record)}>{record.status===1?'禁用':'开启'}</AuthButton>
+                    <AuthButton authname="per-saveClassify" type="primary"  onClick={()=>this.editAddFn(record)}>编辑</AuthButton>
+                    <AuthButton authname="per-deleteClassify" type="primary" danger size="small" disabled={record.status===1} onClick={()=>this.deleteFn(record)}>删除</AuthButton>   
                 </div>
                     
                 }

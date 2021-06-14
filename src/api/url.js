@@ -1,4 +1,4 @@
-const serverApi = process.env.NODE_ENV ==="production"?"https://wx.bylives.com":"";
+const serverApi = process.env.NODE_ENV ==="production"?"":"";
 export let uploadServerHost = serverApi
 export let baseUrl = serverApi+"/api";
 
@@ -124,4 +124,4 @@ export let messageExportExce=`message/exportExce`
 export let cmsImages = `/images`;
 export let cmsImagesSave = `/images/save`;
 export let cmsImagesSwtich= `/images/modifyStatus`;
-export let cmsImagesDel= `/images/delete`;;
+export let cmsImagesDel= `/images/delete`;

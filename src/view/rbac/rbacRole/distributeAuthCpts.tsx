@@ -126,7 +126,6 @@ const DistributeAuthCpts = (props:Iprops) => {
                     }
                        
                 }}
-                // title={() => <div> 分配权限</div>}
                
                 dataSource={authsList} columns={[
                     {
