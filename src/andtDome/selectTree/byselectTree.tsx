@@ -1,5 +1,5 @@
 import { TreeSelect } from "antd";
-import { TreeNode, TreeSelectProps } from "antd/lib/tree-select";
+import { TreeSelectProps } from "antd/lib/tree-select";
 import React, {
   ComponentType,
   Component,
@@ -7,6 +7,7 @@ import React, {
   ReactNode,
 } from "react";
 import ReactDOM, { findDOMNode } from "react-dom";
+const TreeNode = TreeSelect.TreeNode;
 type TreeNodeProps = {
   title: string | ReactNode;
   value: string;
