@@ -7,8 +7,6 @@ export function loadRouter(data: IRouter[] = []) {
   return data.map((itme, index) => {
     let { Components, redirect, children, isNoAuth, ...props } = itme;
     if (children) {
-      console.log("children", children, Components);
-
       return (
         <Route key={props.name || index} {...props}>
           <Components>

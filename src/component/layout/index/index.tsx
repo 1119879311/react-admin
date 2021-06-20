@@ -7,6 +7,7 @@ import LayoutTabs from "../tabs";
 import ajax from "@/api/axios";
 import UserStores from "@/store/userStore";
 import HocLoading, { WithLoadingProps } from "@/component/Loading";
+import IsLoignCpt from "@/component/IsLoginCpt";
 
 const { Header, Sider, Content } = Layout;
 const filterUser = (data: Record<string, any>) => {
@@ -46,10 +47,11 @@ class LayoutMain extends Component {
   async getUserInfo() {
     try {
       let { data } = await ajax.POST("getManagerRole");
-      setInterval(() => {
-        UserStores.setData(filterUser(data.data));
-        this.setState({ loading: false });
-      }, 5000);
+      UserStores.setData(filterUser(data.data));
+      this.setState({ loading: false });
+      // setInterval(() => {
+
+      // }, 5000);
     } catch (error) {
       console.log("error:", error);
     }
@@ -60,9 +62,10 @@ class LayoutMain extends Component {
   render() {
     let { children } = this.props;
     return (
+      // <Redirect to="/login"></Redirect>
       <HocLayoutMain withLoading={this.state.loading}>{children}</HocLayoutMain>
     );
   }
 }
 
-export default LayoutMain;
+export default IsLoignCpt(LayoutMain);

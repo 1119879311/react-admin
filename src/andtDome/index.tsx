@@ -1,4 +1,6 @@
 import AntdTableDome from "./table";
+import AntdSelectTree from "./selectTree";
+
 import { Tabs } from "antd";
 import React, { useState } from "react";
 import { TabsProps, TabPaneProps } from "antd/lib/tabs";
@@ -19,7 +21,16 @@ export default function AntdDome() {
     onTabClick: (key: string) => setTkey(key),
     data: [
       { tab: "Tab Title 2", key: "1", children: <AntdTableDome /> },
-      { tab: "Tab Title 2", key: "2", children: "tabl2" },
+      {
+        tab: "Tab Title 2",
+        key: "2",
+        children: (
+          <div>
+            <AntdSelectTree />
+            <AntdSelectTree />
+          </div>
+        ),
+      },
       { tab: "Tab Title 2", key: "3", children: "tabl3" },
     ],
   };
