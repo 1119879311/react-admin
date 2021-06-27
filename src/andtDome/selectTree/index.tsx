@@ -312,6 +312,34 @@ class Demo extends React.Component {
           <div><Button onClick={this.onRefresh} size="small" icon="sync">刷新</Button></div>
         </div> */}
         </BySelectTree>
+        <TreeSelect
+          showSearch
+          treeData={treeData}
+          dropdownClassName={this.dropdownClassName}
+          style={{ width: "100%" }}
+          //   value={this.state.value}
+          treeCheckable={true}
+          showCheckedStrategy="SHOW_ALL"
+          dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+          placeholder="Please select"
+          allowClear
+          multiple
+          treeDefaultExpandAll
+          //   getPopupContainer={(triggerNode) => triggerNode.parentNode}
+          //   onChange={this.onChange}
+          ref={this.slectTreeRef}
+          dropdownRender={(menu) => (
+            <div>
+              {menu}
+              <div
+                style={{ padding: "4px 8px", cursor: "pointer" }}
+                onMouseDown={(e) => e.preventDefault()}
+              >
+                {this.extactFooterHTML()}
+              </div>
+            </div>
+          )}
+        />
       </div>
     );
   }
