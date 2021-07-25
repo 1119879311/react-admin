@@ -7,6 +7,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+*{
+    -webkit-print-color-adjust: exact;
+}
 #root{
     height: 98%;
 }

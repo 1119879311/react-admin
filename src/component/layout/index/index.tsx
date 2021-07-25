@@ -8,6 +8,7 @@ import ajax from "@/api/axios";
 import UserStores from "@/store/userStore";
 import HocLoading, { WithLoadingProps } from "@/component/Loading";
 import IsLoignCpt from "@/component/IsLoginCpt";
+import PrintChar from "@/component/PrintChar";
 
 const { Header, Sider, Content } = Layout;
 const filterUser = (data: Record<string, any>) => {

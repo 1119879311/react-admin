@@ -6,12 +6,20 @@ import { UserStore } from "./store/index";
 import { configure } from "mobx"; // 开启严格模式
 import zhCN from "antd/lib/locale/zh_CN";
 import "moment/locale/zh-cn";
+import { PrintUtil } from "./component/PrintChar";
 configure({ enforceActions: "observed" });
 function App() {
   return (
     <ConfigProvider locale={zhCN}>
       <Provider UserStore={UserStore}>
+        <div
+          style={{ position: "fixed", zIndex: 1 }}
+          onClick={() => PrintUtil()}
+        >
+          打印
+        </div>
         <RouterLoader></RouterLoader>
+        {/* <p data-print="prinEndHtml" hidden /> */}
         {/* <Suspense
           fallback={
             <Spin tip="Loading...">
