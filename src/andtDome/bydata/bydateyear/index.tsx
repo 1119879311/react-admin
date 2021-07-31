@@ -28,8 +28,7 @@ function ByDateYear(props: Iprops) {
     }
   };
   //切换年
-  const changeYear = (e:React.MouseEvent<HTMLDivElement>,type: string) => {
-    e.stopPropagation();
+  const changeYear = (type: string) => {
     let base = baseValue.current as number;
     if (base <= COUNT) return;
     if (type === "+") {
@@ -56,18 +55,16 @@ function ByDateYear(props: Iprops) {
   }, [props.value]);
 
   return (
-    <div className="by-date-main by-dateyear" onClick={(e)=>{
-      e.stopPropagation();
-    }}>
+    <div className="by-date-main by-dateyear">
       <div className="by-flex by-date-header">
-        <div className="left-header" onClick={(e:React.MouseEvent<HTMLDivElement>) => changeYear(e,"-")}>
+        <div className="left-header" onClick={() => changeYear("-")}>
           <span>&lt;&lt;</span>&nbsp;&nbsp;
         </div>
         <div className="center-header">
           {baseValue.current} 年 -
           {baseValue.current ? baseValue.current + COUNT - 1 : ""} 年
         </div>
-        <div className="right-header" onClick={(e:React.MouseEvent<HTMLDivElement>) => changeYear(e,"+")}>
+        <div className="right-header" onClick={() => changeYear("+")}>
           <span>&gt;&gt;</span> &nbsp;&nbsp;
         </div>
       </div>

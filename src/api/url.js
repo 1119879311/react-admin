@@ -22,7 +22,7 @@ export let delWxno = `/extension/delWxno`;
 export let cmsArticle = `/article`; 
 export let cmsArticleSave = `/article/save`;
 export let cmsArticleSwtich= `/article/modifyStatus`;
-export let cmsArticleDel= `/article/delete`;
+export let cmsArticleDel= `/article/delete`;;
 
 
 //----cms:tab
