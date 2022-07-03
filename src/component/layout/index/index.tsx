@@ -50,9 +50,6 @@ class LayoutMain extends Component {
       let { data } = await ajax.POST("getManagerRole");
       UserStores.setData(filterUser(data.data));
       this.setState({ loading: false });
-      // setInterval(() => {
-
-      // }, 5000);
     } catch (error) {
       console.log("error:", error);
     }

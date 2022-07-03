@@ -5,6 +5,8 @@ import { Tabs } from "antd";
 import React, { useState } from "react";
 import { TabsProps, TabPaneProps } from "antd/lib/tabs";
 import { useEffect } from "react";
+
+import { SketchPicker } from "react-color";
 const { TabPane } = Tabs;
 function mapCmp<T>(Cmp: React.ComponentType<T>, data: Array<T> = []) {
   return data.map((itme) => <Cmp {...itme}></Cmp>);
@@ -40,6 +42,7 @@ export default function AntdDome() {
   };
   return (
     <div className="card-container">
+      <SketchPicker />
       <ByTabs {...tabsParm}></ByTabs>
     </div>
   );

@@ -12,12 +12,6 @@ function App() {
   return (
     <ConfigProvider locale={zhCN}>
       <Provider UserStore={UserStore}>
-        <div
-          style={{ position: "fixed", zIndex: 1 }}
-          onClick={() => PrintUtil()}
-        >
-          打印
-        </div>
         <RouterLoader></RouterLoader>
         {/* <p data-print="prinEndHtml" hidden /> */}
         {/* <Suspense
