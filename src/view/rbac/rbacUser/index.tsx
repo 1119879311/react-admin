@@ -212,6 +212,7 @@ export default class RbacUser extends Component{
                     style={{"margin":"12px auto"}}
                     rowSelection={rowSelection}
                     dataSource={tableData}
+                    scroll={{x:1360}}
                     pagination={{current:currentPage, pageSize: pageSize,onChange:(page)=>this.geTableData(page), total:totalData }}
                     bordered
                     title={() => (
@@ -234,7 +235,7 @@ export default class RbacUser extends Component{
                         {title: '用户类型',	dataIndex: 'user_type',	key: 'user_type',width:150,align:'center',
                         render: (text: any, record:any) =>( getUsertypeText(record.user_type))
                         },
-                        {title: '所属角色',	dataIndex: 'roles',	key: 'roles',width:150,align:'center',
+                        {title: '所属角色',	dataIndex: 'roles',	key: 'roles',width:180,align:'center',
                             render: (roles: any[]) => roles.map((itme:any)=><Tag key={itme.id} icon={itme.status===1?<CheckCircleOutlined />:<MinusCircleOutlined /> } color={itme.status===1?'success':'default'}>{itme.name}{itme.role_type===1?'[系统预设]':''}</Tag> )
                         },
                         {title: '状态 ',  dataIndex: 'status',key:"status",width:80,align:'center',render:(text:any,record: any)=>{
@@ -245,7 +246,7 @@ export default class RbacUser extends Component{
                     {title: '创建时间',	dataIndex: 'createtime',	key: 'createtime',width:180,align:'center',
                         render:(text: any, record: any) => (<span>{dataFormat(record.createtime)}</span>)
                     },
-                    {title: '操作',  dataIndex: 'operation',key:"operation", width: 320, fixed: 'right',
+                    {title: '操作',  dataIndex: 'operation',key:"operation", width: 200, fixed: 'right',
                         render:(text: any,record: any) =>
                             <> {
                                 record.user_type!==1?<div  className="operation-main">
