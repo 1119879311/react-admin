@@ -5,6 +5,7 @@ import {  AppstoreOutlined } from '@ant-design/icons';
 // import {menuData} from "./data-test"
 import { inject, observer } from "mobx-react";
 import { UserStoreClass } from "@/store/userStore";
+import {findTreeParendId} from "@/util"
 
 interface IProps extends  RouteComponentProps {
     UserStore?:UserStoreClass
@@ -28,8 +29,9 @@ const menuItme = (itmeData:any[])=>{
          </SubMenu>
           
           }else{
+            console.log("itmes.url",itmes.url)
            return (
-             <Menu.Item key={itmes.url+''}>
+             <Menu.Item key={itmes.url||''}>
               <Link to={itmes.url}>
                   <AppstoreOutlined />
                   <span> {itmes.title}</span>
@@ -48,9 +50,13 @@ class Sider extends React.Component<IProps> {
     current:setPathKey( this.props.location.pathname),
     openKeys:[]
   };
-//   componentDidMount(){
-//       console.log(this.props.UserStore?.userData.user_name)
-//   }
+  componentDidMount(){
+    let openKeys = findTreeParendId(this.props.UserStore?.userData.menus || [],this.props.location.pathname,'url','signName')
+      this.setState({
+      openKeys,
+    });
+      console.log("======",this.state.current, this.props.location.pathname,openKeys)
+  }
   UNSAFE_componentWillReceiveProps(nextProps: { location: { pathname: string; }; }) {
       console.log(nextProps.location.pathname,this.props.location.pathname)
     if (nextProps.location.pathname !== this.props.location.pathname) {
@@ -61,14 +67,17 @@ class Sider extends React.Component<IProps> {
   
    // 展开一级，显示二级
    onOpenChange = (openKeys:never[]) => {
-    const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+    // console.log("openKeys",openKeys)
+    // const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
     this.setState({
-      openKeys: latestOpenKey?[latestOpenKey]:[],
+      openKeys: openKeys,
     });
     
   }
   render() {
+
     let list = this.props.UserStore?.userData.menus||[];
+    console.log("list",list,this.state.current)
     return (
       <>
         <Menu

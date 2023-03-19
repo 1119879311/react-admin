@@ -1,6 +1,7 @@
 import { inject, observer } from "mobx-react"
 import React, { Component } from "react"
 import {UserStoreClass} from "@/store/userStore"
+import "./index.less"
 interface IPorps{
     UserStore:UserStoreClass
 }
@@ -11,8 +12,10 @@ class IndexPage extends Component<IPorps>{
         let {userData} = this.props.UserStore
     return (
         <div  className="m-flex m-center m-column">
-            <h2>欢迎使用后台管理系统</h2>
-            <h3>当前用户：{userData.user_name}</h3>
+           <div className="container-pageList">
+               
+
+           </div>
         </div>
     )
     }

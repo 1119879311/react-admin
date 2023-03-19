@@ -6,7 +6,7 @@ import PrivateRoute from "./PrivateRoute";
 export function loadRouter(data: IRouter[] = []) {
   return data.map((itme, index) => {
     let { Components, redirect, children, isNoAuth, ...props } = itme;
-    if (children) {
+    if (children&&children.length) {
       return (
         <Route key={props.name || index} {...props}>
           <Components>

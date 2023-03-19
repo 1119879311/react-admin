@@ -119,3 +119,9 @@ button.ant-btn{
     background-color: #e6f7ff;
     border: 1px solid #91d5ff;
 }
+
+.ant-form.search-cpt{
+    padding: 12px 12px 0 12px;
+    background-color: #fff;
+}
+

@@ -1,5 +1,5 @@
 import ajax from "@/api/axios";
-import { Button, Checkbox, message, Modal, Table } from "antd";
+import { Button, Checkbox, Drawer, message, Modal, Space, Table } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react"
@@ -95,16 +95,22 @@ const DistributeAuthCpts = (props:Iprops) => {
 
     return <div>
 
-<Modal
+<Drawer
         getContainer={false}
         title={ <div><span>分配资源</span> &nbsp; &nbsp; <Checkbox onChange={onCheckAllChange} checked={checkAll}  > 全选</Checkbox> </div>}
-        centered
+        // centered
         visible={modelLoading}
-        okText="提交"
-        cancelText="取消"
-        onOk={() =>submint()}
-        onCancel={() => submitCallback(false)}
+        
+        onClose={()=>submitCallback(false)}
+        // okText="提交"
+        // cancelText="取消"
+        // onOk={() =>submint()}
+        // onCancel={() => submitCallback(false)}
         width={960}
+        footer={ 
+            <Space><Button  onClick={()=>submitCallback(false)}> 取消</Button>
+            <Button type="primary" onClick={() =>submint()}> 提交</Button> </Space>
+        }
        
     >
        
@@ -152,7 +158,7 @@ const DistributeAuthCpts = (props:Iprops) => {
                     }
                 ]} />
         </Checkbox.Group>
-        </Modal>
+        </Drawer>
         </div>
 }
 

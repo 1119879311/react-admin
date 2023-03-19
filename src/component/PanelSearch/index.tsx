@@ -18,6 +18,6 @@ export default class PanelSearch extends Component {
     return [];
   }
   render() {
-    return <div>1212</div>;
+    return <div className="panelSearch-warp">1212</div>;
   }
 }

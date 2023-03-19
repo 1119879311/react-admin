@@ -190,3 +190,33 @@ export  function BlobToText(data:Blob){
         }
     })
 }
+
+
+export function findTreeParendId<T extends {[key:string]:any}>(dataArr:T[],value:any,keys:string,rekeys:string,childrenKeys?:string):Array<keyof T>{
+    let data = JSON.parse(JSON.stringify(dataArr));//避免引用，做深拷贝处理
+    var resArr:Array<keyof T> =  [];
+    let childrenKey = childrenKeys||'children';
+    if(data.length<0){
+        return resArr
+    }
+    let recursion = (arrs:T[],itmeId:any,parendId?:any)=>{
+        for(let i=0;i<arrs.length;i++){
+
+            let itme:T = arrs[i]
+            if(itme[keys]===itmeId){
+                resArr.unshift(itme[rekeys]);// 找到匹配的就加进去
+                if(parendId){
+                    recursion(data,parendId)
+                }
+                break;//跳出当前循环
+            }else{
+                //找不到，如果有子级，递归往下找
+                if(itme[childrenKey]&& Array.isArray(itme[childrenKey])){
+                    recursion(itme[childrenKey],itmeId,itme[keys])
+                }
+            }
+        }
+    }
+    recursion(data,value)
+    return resArr;
+}

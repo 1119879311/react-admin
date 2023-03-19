@@ -16,6 +16,7 @@ const PrivateRoute = (props: PropsWithChildren<RouteProps & Iprops>) => {
   if (!token) {
     return <Redirect to="/login" />;
   }
+  console.log("isAuth",isAuth)
   return isAuth ? (
     <Route {...props}>{children}</Route>
   ) : (

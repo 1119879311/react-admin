@@ -1,6 +1,5 @@
 import React, { Component, PropsWithChildren } from "react";
 import { Layout } from "antd";
-import "./index.css";
 import LayoutSider from "../silder";
 import LayoutHeader from "../header";
 import LayoutTabs from "../tabs";
@@ -8,7 +7,8 @@ import ajax from "@/api/axios";
 import UserStores from "@/store/userStore";
 import HocLoading, { WithLoadingProps } from "@/component/Loading";
 import IsLoignCpt from "@/component/IsLoginCpt";
-import PrintChar from "@/component/PrintChar";
+import "./index.css";
+
 
 const { Header, Sider, Content } = Layout;
 const filterUser = (data: Record<string, any>) => {
@@ -59,8 +59,8 @@ class LayoutMain extends Component {
   }
   render() {
     let { children } = this.props;
+    console.log("layout-render")
     return (
-      // <Redirect to="/login"></Redirect>
       <HocLayoutMain withLoading={this.state.loading}>{children}</HocLayoutMain>
     );
   }

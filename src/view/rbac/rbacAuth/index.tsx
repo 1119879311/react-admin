@@ -1,4 +1,4 @@
-import { Col, Menu, message, Row, Table, TreeSelect,Dropdown } from 'antd';
+import { Col, Menu, message, Row, Table, TreeSelect,Dropdown ,Space, Modal, Drawer} from 'antd';
 import { AppstoreOutlined,DownOutlined } from '@ant-design/icons';
 import React from 'react';
 import ajax from '@/api/axios';
@@ -72,22 +72,28 @@ function initEditAddForm(){
 interface IOperationPorps {
     itmes:{[key:string]:any}
     auth_type:number,
-    editAddFn:Function,
     switchStatuFn:Function
+    editAddFn?:Function,
+    authLook?:Function
 }
 
 const OperationCpt = (props:IOperationPorps)=>{
-    let  {itmes,auth_type,switchStatuFn,editAddFn} = props
-    const meun = <Menu>
-                    <Menu.Item>
-                         <AuthButton type="primary" danger={itmes.status===1} onClick={(e:any)=>{switchStatuFn(e,itmes)}}  size="small">{itmes.status===1?'禁用':'开启'}</AuthButton>
-                    </Menu.Item>
-                    <Menu.Item>
-                        <AuthButton type="primary" size="small" onClick={(e:any)=>editAddFn(e,auth_type,itmes)}>[查看|编辑]</AuthButton>
-                    </Menu.Item>
-                </Menu>
-    return  <Dropdown overlay={meun} placement="bottomLeft" arrow><span  onClick={e => e.preventDefault()}>
-   操作 <DownOutlined /></span></Dropdown>
+    let  {itmes,auth_type,switchStatuFn,editAddFn,authLook} = props
+    return <Space>
+             <AuthButton type="primary" danger={itmes.status===1} onClick={(e:any)=>{switchStatuFn(e,itmes)}}  size="small">{itmes.status===1?'禁用':'开启'}</AuthButton>
+             {editAddFn&&<AuthButton type="primary" size="small" onClick={(e:any)=>editAddFn?.(e,auth_type,itmes)}>[查看|编辑]</AuthButton>}
+             {authLook&&<AuthButton type="primary"  onClick={(e:any)=>{authLook?.(e,itmes)}}  size="small">资源列表</AuthButton>}
+        </Space>
+//     const meun = <Menu>
+//                     <Menu.Item>
+//                          <AuthButton type="primary" danger={itmes.status===1} onClick={(e:any)=>{switchStatuFn(e,itmes)}}  size="small">{itmes.status===1?'禁用':'开启'}</AuthButton>
+//                     </Menu.Item>
+//                     <Menu.Item>
+//                         <AuthButton type="primary" size="small" onClick={(e:any)=>editAddFn(e,auth_type,itmes)}>[查看|编辑]</AuthButton>
+//                     </Menu.Item>
+//                 </Menu>
+//     return  <Dropdown overlay={meun} placement="bottomLeft" arrow><span  onClick={e => e.preventDefault()}>
+//    操作 <DownOutlined /></span></Dropdown>
 }      
 
 export default class RbacAuth  extends React.Component {
@@ -97,6 +103,7 @@ export default class RbacAuth  extends React.Component {
          tableList:[],
          editAddForm : initEditAddForm(),
         modelLoading:false,
+        visible:false
     }
     componentWillUnmount() {
         this.setState = () => false;
@@ -105,10 +112,13 @@ export default class RbacAuth  extends React.Component {
     //点击菜单获取右边显示的权限列表
     onTitleClick = (e:Event,data:any)=>{
         // e.stopPropagation()
+        e.stopPropagation()
+        e.preventDefault()
         // 如果子节点是菜单跳过
         if(!data.children?.length||data.auths?.length){
+        
             this.clickIndex = data.id;
-            this.setState({tableList:data.auths})
+            this.setState({tableList:data.auths,visible:true })
         }
        
     }
@@ -130,6 +140,7 @@ export default class RbacAuth  extends React.Component {
     // 添加/修改
     editAddFn=(e:Event,auth_type:number,data?:any)=>{
         e.stopPropagation()
+        e.preventDefault()
         let editAddForm = initEditAddForm()
         editAddForm.auth_type = auth_type
         if(data){
@@ -147,6 +158,7 @@ export default class RbacAuth  extends React.Component {
     switchStatuFn=(e:Event,data:any)=>{
         console.log(data)
         e.stopPropagation()
+        e.preventDefault()
         ajax.POST("rbacAuthSwtich",{id:data.id,status:data.status===1?2:1}).then(result=>{
             let {data} = result
             message.success(data.message||"操作成功")
@@ -171,31 +183,39 @@ export default class RbacAuth  extends React.Component {
                 key={itmes.signName}
                 title={
                 <div style={{display:"flex",justifyContent:'space-between',alignItems:"center"}}>
-                   <span onClick={(e:any)=>this.onTitleClick(e,itmes)}>
+                   {/* <span onClick={(e:any)=>this.onTitleClick(e,itmes)}> */}
+                   <span>
                         <AppstoreOutlined />
                         <span>{itmes.title}&nbsp;&nbsp;({getStatusText(itmes.status)})</span>
                    </span>
-                   <OperationCpt 
-                        itmes={itmes}
-                        auth_type={1}
-                        switchStatuFn={this.switchStatuFn}
-                        editAddFn={this.editAddFn}
-                    />
-                </div>
-                }>
-                {this.menuItme(itmes.children)}
-            </SubMenu>:(itmes.auth_type===1?<Menu.Item key={itmes.signName} data-children={itmes.children}>
-                <div style={{display:"flex",justifyContent:'space-between',alignItems:"center"}}>
-                    <span onClick={(e:any)=>this.onTitleClick(e,itmes)}>
-                        <AppstoreOutlined />
-                        <span> {itmes.title}&nbsp;&nbsp;({getStatusText(itmes.status)})</span>
-                    </span> 
+                   <div style={{position:"absolute",right:"40px"}}>
                     <OperationCpt 
                         itmes={itmes}
                         auth_type={1}
                         switchStatuFn={this.switchStatuFn}
                         editAddFn={this.editAddFn}
+                        authLook={this.onTitleClick}
+                    /></div>
+                </div>
+                }>
+                {this.menuItme(itmes.children)}
+            </SubMenu>:(itmes.auth_type===1?<Menu.Item key={itmes.signName} data-children={itmes.children}>
+                <div style={{display:"flex",justifyContent:'space-between',alignItems:"center"}}>
+                    {/* <span onClick={(e:any)=>this.onTitleClick(e,itmes)}> */}
+                     <span>
+                        <AppstoreOutlined />
+                        <span> {itmes.title}&nbsp;&nbsp;({getStatusText(itmes.status)})</span>
+                    </span> 
+                    <div style={{position:"absolute",right:"40px"}}>
+                    <OperationCpt 
+                        itmes={itmes}
+                        auth_type={1}
+                        switchStatuFn={this.switchStatuFn}
+                        editAddFn={this.editAddFn}
+                        authLook={this.onTitleClick}
                     />
+                    </div>
+                   
                    
                 </div>
             </Menu.Item>:'')
@@ -216,20 +236,49 @@ export default class RbacAuth  extends React.Component {
        return (
           <>
             <Row gutter={20}>
-            <Col span={7} >
-                <div style={{background: "#fff", padding: "16px",borderBottom: "1px solid #f0f2f5"}}>
-                    <AuthButton type="primary" size="small" onClick={(e:any)=>this.editAddFn(e,1)}>新增菜单</AuthButton>
-                </div>
+            <Col span={24} >
+                <Space style={{width:"100%",background: "#fff", padding: "16px",borderBottom: "1px solid #f0f2f5"}}>
+                    <AuthButton type="primary" size="small" onClick={(e:any)=>this.editAddFn(e,1)}>新增路由&菜单</AuthButton>
+                    <AuthButton type="primary" size="small" onClick={(e:any)=>this.editAddFn(e,2)}>新增API资源</AuthButton>
+                </Space>
                 <Menu
                 defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
                 mode="inline"
+                
             >
                 {this.menuItme(authsList)}
             
             </Menu>
             </Col>
-            <Col span={17}>
+            <Drawer width={800} visible={this.state.visible} onClose={()=>{
+                this.setState({visible:false})
+            }}>
+            <Table  rowKey={(record:any)=>record.id}  
+                 title={() => (
+                    <div>
+                        资源列表
+                    </div>
+                )}
+                dataSource={tableList} columns={[
+                    { title: '权限id', dataIndex: 'id',  key: 'id',width:80,align:"center"},
+                    { title: '权限名称', dataIndex: 'title',  key: 'title'},
+                    { title: '权限标识', dataIndex: 'signName',  key: 'signName'},
+                    { title: '权限链接', dataIndex: 'url',  key: 'url'},
+                    { title: '权限状态', dataIndex: 'status',  key: 'status',render:(text:any,record: any)=>getStatusText(record.status)},
+                    {title: '操作',  dataIndex: 'operation',key:"operation",  fixed: 'right',
+                    render:(text: any,record: any) =>
+                         <OperationCpt 
+                            itmes={record}
+                            auth_type={2}
+                            switchStatuFn={this.switchStatuFn}
+                            // editAddFn={this.editAddFn}
+                         />
+                     
+                    }
+                ]} />
+            </Drawer>
+            {/* <Col span={17}>
 
                 <Table  rowKey={(record:any)=>record.id}  
                  title={() => (
@@ -254,7 +303,7 @@ export default class RbacAuth  extends React.Component {
                      
                     }
                 ]} />
-            </Col>
+            </Col> */}
         </Row>
         <EditAddCpt 
             modelLoading={this.state.modelLoading}
