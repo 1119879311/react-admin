@@ -1,5 +1,5 @@
 import ajax from "@/api/axios";
-import {  Form, Input, message, Modal, Switch, InputNumber, TreeSelect } from "antd";
+import {  Form, Input, message, Modal, Switch, InputNumber, TreeSelect, Radio } from "antd";
 import React, { useEffect } from "react"
 const { TreeNode } = TreeSelect;
 
@@ -18,23 +18,29 @@ interface Iporps {
     editAddForm: IeditAddForm
     authList: any[]
     modelLoading?: boolean,
-    submitCallback?: (value: IeditAddForm | boolean) => void
+    submitCallback?: (value: IeditAddForm | boolean) => void,
+    [key:string]:any
 
 }
 const layout = { labelCol: { span: 6 }, wrapperCol: { span: 16 }, };
 // const tailLayout = { wrapperCol: { offset: 8, span: 16 }, }
-
+const optionsAuthTypeList= [
+    { label: '路由', value: 3 },
+    { label: '菜单', value: 1 },
+    { label: '权限', value: 2,  },
+  ];
+  
 
 const EditAddCpt = (props: Iporps) => {
-    let { authList, editAddForm, modelLoading, submitCallback = () => { } } = props
-    let authTypeText = editAddForm.auth_type === 1 ? '菜单' : '权限'
+    let { authList, editAddForm, modelLoading, submitCallback = () => { },authTypeText="资源"} = props
+    // let authTypeText = editAddForm.auth_type === 1 ? '菜单' : '权限'
     const [form] = Form.useForm();
     const onFinish = () => {
         // console.log('Success:', values);
         console.log(editAddForm.auth_type)
         form.validateFields().then(res=>{
             res.status = res.status?1:2;
-            ajax.POST("rbacAuthSave",{...res,auth_type:editAddForm.auth_type}).then(result=>{
+            ajax.POST("rbacAuthSave",res).then(result=>{
                 let {data} = result
                 message.success(data.message||"操作成功")
                 submitCallback(true)
@@ -78,9 +84,21 @@ const EditAddCpt = (props: Iporps) => {
                 // onFinish={onFinish}
             >
                 {editAddForm.id ?
-                    <Form.Item label="序号id" name="id"
+                    <Form.Item hidden label="序号id" name="id"
                     ><Input disabled /></Form.Item> : ''
                 }
+
+                <Form.Item label={`${authTypeText}类型`} name="auth_type"
+                    rules={[{ required: true, message: '请选择类型!' }]}
+                >
+                    <Radio.Group
+                        options={optionsAuthTypeList}
+                        optionType="button"
+                        buttonStyle="solid"
+                    />
+                </Form.Item>
+                
+
                 <Form.Item label={`${authTypeText}名称`} name="title"
                     rules={[{ required: true, message: '请输入名称!' }]}
                 >

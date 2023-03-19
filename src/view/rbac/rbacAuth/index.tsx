@@ -1,4 +1,4 @@
-import { Col, Menu, message, Row, Table, TreeSelect,Dropdown ,Space, Modal, Drawer} from 'antd';
+import { Col, Menu, message, Row, Table, TreeSelect,Dropdown ,Space, Modal,Tag , Drawer} from 'antd';
 import { AppstoreOutlined,DownOutlined } from '@ant-design/icons';
 import React from 'react';
 import ajax from '@/api/axios';
@@ -12,6 +12,14 @@ function getStatusText(status:number){
     let text = bool?"正常":"禁用"
     return <span style={{color:color}}>{text}</span>
 }
+
+function getAuthName(auth_type:number){
+    if(auth_type===1) return  <Tag  color="#108ee9">[菜单]</Tag>
+    if(auth_type===2) return  <Tag  color="#2db7f5">[权限]</Tag> 
+    if(auth_type===3) return   <Tag  color="#87d068">[路由]</Tag>
+
+}
+
 // 找下级的 权限数据
 function findFirstChild(id:number,list:any[]){
     let res:any =[];
@@ -38,7 +46,8 @@ function splitGroupAuths(data:{[key:string]:any}[]){
             let auths:any[] = []
             let childs:any=[];
             for(let i=0;i<itme.children.length;i++){
-                if(itme.children[i].auth_type===1){
+                let auth_type = itme.children[i].auth_type
+                if(auth_type===1 || auth_type===3){
                     childs.push(itme.children[i])
                 }else{
                     itme.children[i].children=null;
@@ -137,6 +146,10 @@ export default class RbacAuth  extends React.Component {
             this.setState({authsList:data,tableList:tableList})
         })
     }
+    isMeunRouter=(auth_type:number)=>{
+        return auth_type===1 || auth_type===3
+    }
+
     // 添加/修改
     editAddFn=(e:Event,auth_type:number,data?:any)=>{
         e.stopPropagation()
@@ -178,7 +191,7 @@ export default class RbacAuth  extends React.Component {
     //渲染菜单列表
     menuItme = (data:any[])=>{
         return data.map(itmes=>{
-            let bool = itmes.children?.length&&itmes.children[0]?.auth_type===1;
+            let bool = itmes.children?.length&& this.isMeunRouter(itmes.children[0]?.auth_type) ;
             return bool?<SubMenu
                 key={itmes.signName}
                 title={
@@ -186,7 +199,7 @@ export default class RbacAuth  extends React.Component {
                    {/* <span onClick={(e:any)=>this.onTitleClick(e,itmes)}> */}
                    <span>
                         <AppstoreOutlined />
-                        <span>{itmes.title}&nbsp;&nbsp;({getStatusText(itmes.status)})</span>
+                        <span>{getAuthName(itmes.auth_type)}&nbsp;&nbsp;{itmes.title}&nbsp;&nbsp;({getStatusText(itmes.status)})</span>
                    </span>
                    <div style={{position:"absolute",right:"40px"}}>
                     <OperationCpt 
@@ -199,12 +212,12 @@ export default class RbacAuth  extends React.Component {
                 </div>
                 }>
                 {this.menuItme(itmes.children)}
-            </SubMenu>:(itmes.auth_type===1?<Menu.Item key={itmes.signName} data-children={itmes.children}>
+            </SubMenu>:(this.isMeunRouter(itmes.auth_type)?<Menu.Item key={itmes.signName} data-children={itmes.children}>
                 <div style={{display:"flex",justifyContent:'space-between',alignItems:"center"}}>
                     {/* <span onClick={(e:any)=>this.onTitleClick(e,itmes)}> */}
                      <span>
                         <AppstoreOutlined />
-                        <span> {itmes.title}&nbsp;&nbsp;({getStatusText(itmes.status)})</span>
+                        <span>{getAuthName(itmes.auth_type)}&nbsp;&nbsp; {itmes.title}&nbsp;&nbsp;({getStatusText(itmes.status)})</span>
                     </span> 
                     <div style={{position:"absolute",right:"40px"}}>
                     <OperationCpt 
@@ -225,7 +238,7 @@ export default class RbacAuth  extends React.Component {
     loopTreeItme = (data:any[])=>{
         return data.map(itme=>{
             let bool= itme.children?.length;
-            return itme.auth_type===1?<TreeNode value={itme.id} title={itme.title}> 
+            return this.isMeunRouter(itme.auth_type)?<TreeNode value={itme.id} title={itme.title}> 
                { bool?this.loopTreeItme(itme.children):''}
             </TreeNode>:''
         })
@@ -238,8 +251,8 @@ export default class RbacAuth  extends React.Component {
             <Row gutter={20}>
             <Col span={24} >
                 <Space style={{width:"100%",background: "#fff", padding: "16px",borderBottom: "1px solid #f0f2f5"}}>
-                    <AuthButton type="primary" size="small" onClick={(e:any)=>this.editAddFn(e,1)}>新增路由&菜单</AuthButton>
-                    <AuthButton type="primary" size="small" onClick={(e:any)=>this.editAddFn(e,2)}>新增API资源</AuthButton>
+                    <AuthButton type="primary" size="small" onClick={(e:any)=>this.editAddFn(e,1)}>新增资源</AuthButton>
+                    {/* <AuthButton type="primary" size="small" onClick={(e:any)=>this.editAddFn(e,2)}>新增API资源</AuthButton> */}
                 </Space>
                 <Menu
                 defaultSelectedKeys={['1']}

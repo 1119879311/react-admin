@@ -138,9 +138,9 @@ const DistributeAuthCpts = (props:Iprops) => {
                         title: '菜单', dataIndex: 'title', key: 'title', width: 320,
                         render: (text: any, record: any) => {
                             return {
-                            children: <Checkbox disabled={record.status===1?false:true} onChange={(e) => onChageSige(e, record,true)} value={record.id+''}><span>{record.title}【{record.auth_type === 1 ? '菜单' : '权限'}】</span></Checkbox>,
+                            children: <Checkbox disabled={record.status===1?false:true} onChange={(e) => onChageSige(e, record,true)} value={record.id+''}><span>{record.title}【{record.auth_type === 1 ? '菜单' : '路由'}】</span></Checkbox>,
                                 props: {
-                                    rowSpan: record.auth_type === 1 ? 1 : 0
+                                    rowSpan: record.auth_type === 1 || record.auth_type === 3? 1 : 0
                                 }
                             }
                         }
